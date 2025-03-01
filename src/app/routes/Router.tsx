@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Authorization, Registration } from "@pages";
+import { Authorization, Registration, LotComponent } from "@pages";
 
 const Router = () => {
   return (
@@ -8,6 +8,7 @@ const Router = () => {
       <Route path="/registration" element={<Registration />} />
       <Route path="/" element={<div>Home</div>} />
       <Route path="*" element={<Navigate to="/authorization" />} />
+      <Route path="/lot/:lotId" element={<LotComponent />} />
     </Routes>
   );
 };
