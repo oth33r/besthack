@@ -1,0 +1,78 @@
+.marketplace {
+  height: 100%;
+  max-width: 1350px;
+  width: 100%;
+  margin: 32px auto;
+  background-color: var(--black);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+
+  &__header {
+    border-radius: 16px 16px 0 0;
+    padding: 8px 24px;
+    background-color: var(--black);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: fit-content;
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  &__title {
+    color: var(--white);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  &__avatar {
+    color: var(--white);
+    margin-bottom: 0;
+    background-color: var(--white);
+    width: 32px !important;
+    height: 32px !important;
+    flex-shrink: 0;
+
+    svg {
+      color: var(--black);
+    }
+  }
+
+  &__search {
+    border-radius: 8px;
+    background-color: var(--black);
+    color: var(--white);
+    border: 1px solid var(--border-color);
+
+    &:focus {
+      background-color: var(--black);
+    }
+
+    &::placeholder {
+      color: var(--placeholder-color);
+    }
+  }
+
+  &__main {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__blocks {
+    display: flex;
+    gap: 24px;
+  }
+
+  &__block {
+    flex: 1;
+  }
+}

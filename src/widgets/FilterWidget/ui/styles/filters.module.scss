@@ -1,0 +1,14 @@
+.filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
+  &__input {
+    max-width: 250px;
+    border: 1px solid var(--border-color);
+
+    &::placeholder {
+      color: var(--placeholder-color);
+    }
+  }
+}
