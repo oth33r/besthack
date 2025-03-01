@@ -1,0 +1,28 @@
+.block {
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  color: var(--placeholder-color);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  &__icon {
+    color: var(--placeholder-color);
+  }
+
+  &__content {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 8px;
+    color: var(--white);
+  }
+}

@@ -5,13 +5,13 @@
   margin: 32px auto;
   background-color: var(--black);
   border-radius: 16px;
-  border: 1.5px solid var(--placeholder-color);
+  border: 1px solid var(--border-color);
 
   &__header {
     border-radius: 16px 16px 0 0;
-    border-bottom: 1.5px solid var(--placeholder-color);
     padding: 8px 24px;
     background-color: var(--black);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,7 +27,7 @@
 
   &__title {
     color: var(--white);
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 600;
     line-height: 20px;
   }
@@ -48,10 +48,31 @@
   &__search {
     border-radius: 8px;
     background-color: var(--black);
-    color: var(--placeholder-color);
+    color: var(--white);
+    border: 1px solid var(--border-color);
+
+    &:focus {
+      background-color: var(--black);
+    }
 
     &::placeholder {
       color: var(--placeholder-color);
     }
+  }
+
+  &__main {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__blocks {
+    display: flex;
+    gap: 24px;
+  }
+
+  &__block {
+    flex: 1;
   }
 }

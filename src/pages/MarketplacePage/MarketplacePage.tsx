@@ -1,11 +1,16 @@
 import * as React from "react";
-import { Avatar, Input, Layout, Typography } from "antd";
+import { Avatar, Input, Layout } from "antd";
 import { Lot } from "@entities/lot/types/types";
 import { FilterWidget } from "@widgets/FilterWidget";
 
 import styles from "./styles/marketplace.module.scss";
 import { Header } from "antd/es/layout/layout";
-import { User } from "lucide-react";
+import { DollarSign, Filter, User } from "lucide-react";
+import {
+  Block,
+  BlockContent,
+  BlockHeader,
+} from "@shared/components/Block/Block";
 
 // Тестовые данные
 const testData: Lot[] = [
@@ -56,17 +61,45 @@ export const MarketplacePage: React.FC = () => {
     <Layout className={styles.marketplace}>
       <Header className={styles.marketplace__header}>
         <div className={styles.marketplace__container}>
-          <Input
-            placeholder="Search..."
-            className={styles.marketplace__search}
-          />
           <Avatar
             size={40}
             icon={<User />}
             className={styles.marketplace__avatar}
           />
+          <Input
+            placeholder="Search..."
+            variant="borderless"
+            className={styles.marketplace__search}
+          />
         </div>
       </Header>
+
+      <main className={styles.marketplace__main}>
+        <h1 className={styles.marketplace__title}>Marketplace</h1>
+
+        <FilterWidget />
+
+        <div className={styles.marketplace__blocks}>
+          <Block className={styles.marketplace__block}>
+            <BlockHeader icon={<Filter width={16} height={16} />}>
+              Total number of lots
+            </BlockHeader>
+            <BlockContent>432</BlockContent>
+          </Block>
+          <Block className={styles.marketplace__block}>
+            <BlockHeader icon={<DollarSign width={16} height={16} />}>
+              Highest price
+            </BlockHeader>
+            <BlockContent>$52.89</BlockContent>
+          </Block>
+          <Block className={styles.marketplace__block}>
+            <BlockHeader icon={<DollarSign width={16} height={16} />}>
+              Lowest price
+            </BlockHeader>
+            <BlockContent>$373.02</BlockContent>
+          </Block>
+        </div>
+      </main>
     </Layout>
   );
 };
