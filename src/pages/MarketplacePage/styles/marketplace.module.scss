@@ -76,4 +76,11 @@
   &__block {
     flex: 1;
   }
+
+  &__loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
 }

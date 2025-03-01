@@ -1,14 +1,23 @@
-import { Input } from "antd";
+import { Dropdown, Input } from "antd";
 import styles from "./styles/filters.module.scss";
+import type { MenuProps } from "antd";
 
-const FilterWidget = () => {
+interface FilterWidgetProps {
+  regions: MenuProps["items"];
+  fuelTypes: MenuProps["items"];
+  oilBases: MenuProps["items"];
+}
+
+const FilterWidget = ({ regions, fuelTypes, oilBases }: FilterWidgetProps) => {
   return (
     <div className={styles.filters}>
-      <Input
-        placeholder="Region..."
-        variant="borderless"
-        className={styles.filters__input}
-      />
+      <Dropdown menu={{ items: regions }} trigger={["click"]}>
+        <Input
+          placeholder="Region..."
+          variant="borderless"
+          className={styles.filters__input}
+        />
+      </Dropdown>
       <Input
         placeholder="Fuel type..."
         variant="borderless"

@@ -1,5 +1,6 @@
 import { AuthorizationFormType } from "@pages/Authorization/model/types/types";
 import { SignupFormType } from "@pages/Registration/model/types/types";
+import { Lot } from "@shared/types/types";
 import axios from "axios";
 
 export const API = axios.create();
@@ -24,4 +25,8 @@ export const createUser = async (data: SignupFormType) => {
 
 export const validateUser = async () => {
   return await API.get("/api/validate", { withCredentials: true });
+};
+
+export const getLots = async () => {
+  return await API.get<Lot[]>("/api/lot", { withCredentials: true });
 };

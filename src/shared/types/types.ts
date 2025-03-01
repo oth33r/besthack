@@ -9,3 +9,13 @@ export type User = {
   email: string;
   username: string;
 };
+
+export type Lot = {
+  id: number;
+  lotNumber: number;
+  fuelType: string;
+  oilBaseName: string;
+  region: string;
+  pricePerTon: number;
+  availableVolume: number;
+};
