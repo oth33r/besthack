@@ -19,3 +19,9 @@ export type Lot = {
   pricePerTon: number;
   availableVolume: number;
 };
+
+// shared/types/types.ts или рядом
+export type AuthResponse = {
+  access_token: string;
+  refresh_token: string;
+};
