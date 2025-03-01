@@ -1,9 +1,7 @@
 import { StrictMode } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-
 import { Router } from "./routes/Router";
-import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -13,8 +11,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-const queryClient = new QueryClient();
 
 function App() {
   return (

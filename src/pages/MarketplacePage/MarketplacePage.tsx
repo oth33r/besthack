@@ -11,6 +11,7 @@ import {
   BlockContent,
   BlockHeader,
 } from "@shared/components/Block/Block";
+import { Lots } from "@widgets/Lots";
 
 // Тестовые данные
 const testData: Lot[] = [
@@ -99,6 +100,8 @@ export const MarketplacePage: React.FC = () => {
             <BlockContent>$373.02</BlockContent>
           </Block>
         </div>
+
+        <Lots />
       </main>
     </Layout>
   );
