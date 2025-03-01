@@ -4,8 +4,7 @@ import { MarketplacePage } from "@/pages/MarketplacePage/MarketplacePage";
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<div>Home</div>} />
-      <Route path="/marketplace" element={<MarketplacePage />} />
+      <Route path="/" element={<MarketplacePage />} />
     </Routes>
   );
 };
