@@ -1,1 +1,3 @@
-export { LotCard, LotCardImage } from "./Lot/Lot";
+export { Error } from "./Error/Error";
+export { Loader } from "./Loader/Loader";
+export { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";

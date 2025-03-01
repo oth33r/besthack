@@ -3,6 +3,16 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import { Router } from "./routes/Router";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      retryDelay: 1000,
+    },
+  },
+});
 
 const queryClient = new QueryClient();
 
