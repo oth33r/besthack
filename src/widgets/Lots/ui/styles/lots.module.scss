@@ -26,6 +26,48 @@
 
     .ant-pagination {
       margin: 16px 0;
+
+      .ant-pagination-prev,
+      .ant-pagination-next {
+        .anticon {
+          color: white !important;
+        }
+      }
+
+      .ant-pagination-item-2 {
+        a {
+          color: black !important;
+        }
+      }
+
+      .ant-pagination-item-1:hover {
+        a {
+          color: white !important;
+        }
+      }
+
+      .ant-pagination-item-2:hover {
+        a {
+          color: white !important;
+        }
+      }
+
+      .ant-pagination-item-active {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+
+        a {
+          color: white !important;
+        }
+      }
+
+      .ant-pagination-next {
+        a {
+          background-color: var(--primary-color);
+          border-radius: 50%;
+          color: white !important;
+        }
+      }
     }
   }
 }
