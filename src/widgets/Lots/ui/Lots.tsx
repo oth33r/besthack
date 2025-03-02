@@ -1,6 +1,8 @@
 import { Table } from "antd";
 import styles from "./styles/lots.module.scss";
 import { Lot } from "@shared/types/types";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const fuelTypeMap: Record<number, string> = {
   10: "АИ-92",
@@ -81,6 +83,7 @@ interface LotsProps {
 
 const Lots = ({ data }: LotsProps) => {
   console.log("Rendering Lots with data:", data);
+  const navigate = useNavigate();
 
   const formattedData = data
     .map((lot) => ({
@@ -106,6 +109,12 @@ const Lots = ({ data }: LotsProps) => {
       className={styles.lots}
       columns={columns}
       dataSource={formattedData}
+      onRow={(record) => ({
+        onClick: () => {
+          // Переходим на страницу лота
+          navigate(`/lot/${record.number}`);
+        },
+      })}
       scroll={{ x: "max-content" }}
       locale={{
         emptyText: "Нет доступных лотов",
