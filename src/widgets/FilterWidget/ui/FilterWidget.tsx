@@ -1,6 +1,7 @@
-import { Dropdown, Input } from "antd";
+import { Dropdown, Input, Button } from "antd";
 import styles from "./styles/filters.module.scss";
 import type { MenuProps } from "antd";
+import { useState } from "react";
 
 interface FilterWidgetProps {
   regions: MenuProps["items"];
@@ -19,38 +20,83 @@ const FilterWidget = ({
   onFuelChange,
   onOilBaseChange,
 }: FilterWidgetProps) => {
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [selectedFuel, setSelectedFuel] = useState<string | null>(null);
+  const [selectedOilBase, setSelectedOilBase] = useState<string | null>(null);
+
+  // Функция для сброса фильтров
+  const resetFilters = () => {
+    setSelectedRegion(null);
+    setSelectedFuel(null);
+    setSelectedOilBase(null);
+    onRegionChange("");
+    onFuelChange("");
+    onOilBaseChange("");
+  };
+
   return (
     <div className={styles.filters}>
+      {/* Фильтр по регионам */}
       <Dropdown
-        menu={{ items: regions, onClick: (e) => onRegionChange(e.key) }}
+        menu={{
+          items: regions,
+          onClick: (e) => {
+            setSelectedRegion(e.key);
+            onRegionChange(e.key);
+          },
+        }}
         trigger={["click"]}
       >
         <Input
-          placeholder="Region..."
+          placeholder={selectedRegion || "Region..."}
           variant="borderless"
           className={styles.filters__input}
+          readOnly
         />
       </Dropdown>
+
+      {/* Фильтр по типу топлива */}
       <Dropdown
-        menu={{ items: fuelTypes, onClick: (e) => onFuelChange(e.key) }}
+        menu={{
+          items: fuelTypes,
+          onClick: (e) => {
+            setSelectedFuel(e.key);
+            onFuelChange(e.key);
+          },
+        }}
         trigger={["click"]}
       >
         <Input
-          placeholder="Fuel type..."
+          placeholder={selectedFuel || "Fuel type..."}
           variant="borderless"
           className={styles.filters__input}
+          readOnly
         />
       </Dropdown>
+
+      {/* Фильтр по нефтебазам */}
       <Dropdown
-        menu={{ items: oilBases, onClick: (e) => onOilBaseChange(e.key) }}
+        menu={{
+          items: oilBases,
+          onClick: (e) => {
+            setSelectedOilBase(e.key);
+            onOilBaseChange(e.key);
+          },
+        }}
         trigger={["click"]}
       >
         <Input
-          placeholder="Oil base..."
+          placeholder={selectedOilBase || "Oil base..."}
           variant="borderless"
           className={styles.filters__input}
+          readOnly
         />
       </Dropdown>
+
+      {/* Кнопка сброса */}
+      <Button onClick={resetFilters} type="default">
+        Reset
+      </Button>
     </div>
   );
 };

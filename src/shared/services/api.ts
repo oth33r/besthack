@@ -10,17 +10,15 @@ export const API = axios.create({
 import { AuthResponse } from "@shared/types/types";
 
 export const login = async (data: AuthorizationFormType) => {
-  return await API.post<AuthResponse>("/api/auth/generate", data);
+  return await API.post<AuthResponse>("/auth/generate", data);
 };
 
 export const getUser = async (id: string) => {
-  return await API.get<AuthorizationFormType>(`/api/user/?user_id=${id}`, {
-    withCredentials: true,
-  });
+  return await API.get<AuthorizationFormType>(`/user/?user_id=${id}`);
 };
 
 export const createUser = async (data: SignupFormType) => {
-  return await API.post<SignupFormType>("/api/user/", {
+  return await API.post<SignupFormType>("/user/", {
     email: data.email,
     password: data.password,
     role: "user",
@@ -28,9 +26,9 @@ export const createUser = async (data: SignupFormType) => {
 };
 
 export const validateUser = async () => {
-  return await API.get("/api/validate", { withCredentials: true });
+  return await API.get("/validate/");
 };
 
 export const getLots = async () => {
-  return await API.get<Lot[]>("/api/lot", { withCredentials: true });
+  return await API.get<Lot[]>("/lot/");
 };

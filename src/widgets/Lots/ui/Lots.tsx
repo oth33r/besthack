@@ -1,38 +1,63 @@
 import { Table } from "antd";
-
 import styles from "./styles/lots.module.scss";
 import { Lot } from "@shared/types/types";
 import { useGetLots } from "@shared/services/queries";
 import { Loader } from "@shared/components/Loader/Loader";
 
+export const fuelTypeMap: Record<number, string> = {
+  10: "АИ-92",
+  20: "АИ-95",
+  30: "АИ-92 Экто",
+  40: "АИ-95 Экто",
+  50: "ДТ",
+};
+
+export const oilBaseMap: Record<number, string> = {
+  101: "Нефтебаза_1",
+  102: "Нефтебаза_2",
+  103: "Нефтебаза_3",
+};
+
 const columns = [
   {
-    title: "id",
-    dataIndex: "id",
+    title: "Номер лота",
+    dataIndex: "number",
+    sorter: (a: any, b: any) => a.number - b.number,
   },
   {
-    title: "Lot number",
-    dataIndex: "lotNumber",
-  },
-  {
-    title: "Fuel type",
+    title: "Вид топлива",
     dataIndex: "fuelType",
+    filters: Object.values(fuelTypeMap).map((fuel) => ({
+      text: fuel,
+      value: fuel,
+    })),
+    onFilter: (value: any, record: any) => record.fuelType === value,
   },
   {
-    title: "Oil base name",
+    title: "Нефтебаза",
     dataIndex: "oilBaseName",
+    filters: Object.values(oilBaseMap).map((base) => ({
+      text: base,
+      value: base,
+    })),
+    onFilter: (value: any, record: any) => record.oilBaseName === value,
   },
   {
-    title: "Region",
-    dataIndex: "region",
+    title: "Дата лота",
+    dataIndex: "date",
+    render: (date: string) => new Date(date).toLocaleDateString(),
+    sorter: (a: any, b: any) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime(),
   },
   {
-    title: "Price per ton",
+    title: "Доступный остаток",
+    dataIndex: "availableBalance",
+    sorter: (a: any, b: any) => a.availableBalance - b.availableBalance,
+  },
+  {
+    title: "Цена за 1 тонну",
     dataIndex: "pricePerTon",
-  },
-  {
-    title: "Available volume",
-    dataIndex: "availableVolume",
+    sorter: (a: any, b: any) => a.pricePerTon - b.pricePerTon,
   },
 ];
 
@@ -41,17 +66,29 @@ interface LotsProps {
 }
 
 const Lots = ({ data }: LotsProps) => {
+  console.log("Rendering Lots with data:", data);
+
+  const formattedData = data
+    .filter((lot) => lot.status === "Подтвержден") // Оставляем только подтвержденные лоты
+    .map((lot) => ({
+      key: lot._id,
+      number: lot.number,
+      date: lot.date,
+      oilBaseName: oilBaseMap[lot.code_nb] || "Неизвестно",
+      fuelType: fuelTypeMap[lot.code_fuel] || "Неизвестно",
+      availableBalance: parseFloat(lot.available_balance),
+      pricePerTon: parseFloat(lot.price_per_ton),
+    }));
+
   return (
     <Table
       className={styles.lots}
       columns={columns}
-      dataSource={data}
+      dataSource={formattedData}
       locale={{
-        emptyText: "No available lots",
+        emptyText: "Нет доступных лотов",
       }}
-      pagination={{
-        pageSize: 10,
-      }}
+      pagination={{ pageSize: 10 }}
     />
   );
 };

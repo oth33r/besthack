@@ -11,13 +11,14 @@ export type User = {
 };
 
 export type Lot = {
-  id: number;
-  lotNumber: number;
-  fuelType: string;
-  oilBaseName: string;
-  region: string;
-  pricePerTon: number;
-  availableVolume: number;
+  _id: number;
+  number: number;
+  date: string;
+  code_fuel: number;
+  code_nb: number;
+  available_balance: string;
+  price_per_ton: string;
+  status: string;
 };
 
 // shared/types/types.ts или рядом

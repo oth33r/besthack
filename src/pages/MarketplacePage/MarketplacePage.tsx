@@ -4,7 +4,7 @@ import { Header } from "antd/es/layout/layout";
 import { DollarSign, Filter, User } from "lucide-react";
 
 import { FilterWidget } from "@widgets/FilterWidget";
-import { Lots } from "@widgets/Lots";
+import { Lots, fuelTypeMap, oilBaseMap } from "@widgets/Lots";
 import { useGetLots } from "@shared/services/queries";
 import { Loader } from "@shared/components";
 import {
@@ -26,47 +26,59 @@ export const MarketplacePage: React.FC = () => {
   // Состояние для поиска
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  // Фильтруем данные на клиенте
+  // Фильтруем данные на клиенте с безопасным доступом к значениям
   const filteredLots = React.useMemo(() => {
     if (!data?.data) return [];
 
     return data.data.filter((lot) => {
-      // Фильтр по региону
+      // Фильтр по нефтебазе
       if (
-        regionFilter &&
-        lot.region.toLowerCase() !== regionFilter.toLowerCase()
+        oilBaseFilter &&
+        (oilBaseMap[lot.code_nb] || "").toLowerCase() !==
+          oilBaseFilter.toLowerCase()
       ) {
         return false;
       }
       // Фильтр по типу топлива
       if (
         fuelFilter &&
-        lot.fuelType.toLowerCase() !== fuelFilter.toLowerCase()
-      ) {
-        return false;
-      }
-      // Фильтр по нефтебазе
-      if (
-        oilBaseFilter &&
-        lot.oilBaseName.toLowerCase() !== oilBaseFilter.toLowerCase()
+        (fuelTypeMap[lot.code_fuel] || "").toLowerCase() !==
+          fuelFilter.toLowerCase()
       ) {
         return false;
       }
 
-      // Поиск по ключевым словам (проверяем fuelType, oilBaseName, region)
+      // Поиск по ключевым словам
       const lowerSearch = searchQuery.toLowerCase();
-      if (
-        searchQuery &&
-        !lot.fuelType.toLowerCase().includes(lowerSearch) &&
-        !lot.oilBaseName.toLowerCase().includes(lowerSearch) &&
-        !lot.region.toLowerCase().includes(lowerSearch)
-      ) {
-        return false;
+      if (searchQuery) {
+        const fuelStr = (fuelTypeMap[lot.code_fuel] || "").toLowerCase();
+        const oilBaseStr = (oilBaseMap[lot.code_nb] || "").toLowerCase();
+        if (
+          !fuelStr.includes(lowerSearch) &&
+          !oilBaseStr.includes(lowerSearch)
+        ) {
+          return false;
+        }
       }
 
       return true;
     });
-  }, [data?.data, regionFilter, fuelFilter, oilBaseFilter, searchQuery]);
+  }, [data?.data, fuelFilter, oilBaseFilter, searchQuery]);
+
+  // Вычисляем Highest и Lowest price на основе поля price_per_ton
+  const highestPrice = React.useMemo(() => {
+    if (!filteredLots.length) return 0;
+    return Math.max(
+      ...filteredLots.map((lot) => parseFloat(lot.price_per_ton))
+    );
+  }, [filteredLots]);
+
+  const lowestPrice = React.useMemo(() => {
+    if (!filteredLots.length) return 0;
+    return Math.min(
+      ...filteredLots.map((lot) => parseFloat(lot.price_per_ton))
+    );
+  }, [filteredLots]);
 
   return (
     <Layout className={styles.marketplace}>
@@ -121,7 +133,7 @@ export const MarketplacePage: React.FC = () => {
           </div>
         ) : (
           <>
-            {/* Пример блоков со статистикой */}
+            {/* Блоки со статистикой */}
             <div className={styles.marketplace__blocks}>
               <Block className={styles.marketplace__block}>
                 <BlockHeader icon={<Filter width={16} height={16} />}>
@@ -134,14 +146,14 @@ export const MarketplacePage: React.FC = () => {
                 <BlockHeader icon={<DollarSign width={16} height={16} />}>
                   Highest price
                 </BlockHeader>
-                <BlockContent>$52.89</BlockContent>
+                <BlockContent>${highestPrice.toFixed(2)}</BlockContent>
               </Block>
 
               <Block className={styles.marketplace__block}>
                 <BlockHeader icon={<DollarSign width={16} height={16} />}>
                   Lowest price
                 </BlockHeader>
-                <BlockContent>$373.02</BlockContent>
+                <BlockContent>${lowestPrice.toFixed(2)}</BlockContent>
               </Block>
             </div>
 

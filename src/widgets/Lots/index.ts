@@ -1,1 +1,1 @@
-export { Lots } from "./ui/Lots";
+export { Lots, fuelTypeMap, oilBaseMap } from "./ui/Lots";
