@@ -1,7 +1,6 @@
 import { Table } from "antd";
 import styles from "./styles/lots.module.scss";
 import { Lot } from "@shared/types/types";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export const fuelTypeMap: Record<number, string> = {

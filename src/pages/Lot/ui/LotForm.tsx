@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Order } from "../model/types/types";
-import { placeOrder } from "@shared/services/api";
 import styles from "./styles/lotForm.module.scss";
 import { usePlaceOrder } from "@shared/services/mutations";
 
