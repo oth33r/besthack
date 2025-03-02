@@ -24,7 +24,6 @@ const FilterWidget = ({
   const [selectedFuel, setSelectedFuel] = useState<string | null>(null);
   const [selectedOilBase, setSelectedOilBase] = useState<string | null>(null);
 
-  // Функция для сброса фильтров
   const resetFilters = () => {
     setSelectedRegion(null);
     setSelectedFuel(null);
@@ -36,7 +35,6 @@ const FilterWidget = ({
 
   return (
     <div className={styles.filters}>
-      {/* Фильтр по регионам */}
       <Dropdown
         menu={{
           items: regions,
@@ -55,7 +53,6 @@ const FilterWidget = ({
         />
       </Dropdown>
 
-      {/* Фильтр по типу топлива */}
       <Dropdown
         menu={{
           items: fuelTypes,
@@ -74,7 +71,6 @@ const FilterWidget = ({
         />
       </Dropdown>
 
-      {/* Фильтр по нефтебазам */}
       <Dropdown
         menu={{
           items: oilBases,
@@ -93,7 +89,6 @@ const FilterWidget = ({
         />
       </Dropdown>
 
-      {/* Кнопка сброса */}
       <Button onClick={resetFilters} type="default">
         Reset
       </Button>

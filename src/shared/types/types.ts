@@ -16,6 +16,7 @@ export type Lot = {
   date: string;
   code_fuel: number;
   code_nb: number;
+  region_code: number;
   available_balance: string;
   price_per_ton: string;
   status: string;

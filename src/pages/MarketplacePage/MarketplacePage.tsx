@@ -14,6 +14,7 @@ import {
 } from "@shared/components/Block/Block";
 
 import styles from "./styles/marketplace.module.scss";
+import { regionMap } from "@widgets/Lots/ui/Lots";
 
 export const MarketplacePage: React.FC = () => {
   const { data, isLoading } = useGetLots();
@@ -24,7 +25,6 @@ export const MarketplacePage: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  console.log(regionFilter);
   const filteredLots = React.useMemo(() => {
     if (!data?.data) return [];
 
@@ -44,6 +44,14 @@ export const MarketplacePage: React.FC = () => {
         return false;
       }
 
+      if (
+        regionFilter &&
+        (regionMap[lot.code_nb] || "").toLowerCase() !==
+          regionFilter.toLowerCase()
+      ) {
+        return false;
+      }
+
       const lowerSearch = searchQuery.toLowerCase();
       if (searchQuery) {
         const fuelStr = (fuelTypeMap[lot.code_fuel] || "").toLowerCase();
@@ -58,7 +66,7 @@ export const MarketplacePage: React.FC = () => {
 
       return true;
     });
-  }, [data?.data, fuelFilter, oilBaseFilter, searchQuery]);
+  }, [data?.data, fuelFilter, oilBaseFilter, regionFilter, searchQuery]);
 
   const knownLots = React.useMemo(() => {
     return filteredLots.filter(
@@ -108,6 +116,7 @@ export const MarketplacePage: React.FC = () => {
           ]}
           fuelTypes={[
             { label: "АИ-95", key: "АИ-95" },
+            { label: "АИ-95 Экто", key: "АИ-95 Экто" },
             { label: "АИ-92", key: "АИ-92" },
             { label: "АИ-92 Экто", key: "АИ-92 Экто" },
             { label: "АИ-95 Экто", key: "АИ-95 Экто" },
