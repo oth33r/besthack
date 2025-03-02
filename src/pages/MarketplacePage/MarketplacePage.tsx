@@ -1,64 +1,92 @@
 import * as React from "react";
 import { Avatar, Input, Layout } from "antd";
-import { Lot } from "@entities/lot/types/types";
-import { FilterWidget } from "@widgets/FilterWidget";
-
-import styles from "./styles/marketplace.module.scss";
 import { Header } from "antd/es/layout/layout";
 import { DollarSign, Filter, User } from "lucide-react";
+
+import { FilterWidget } from "@widgets/FilterWidget";
+import { Lots, fuelTypeMap, oilBaseMap } from "@widgets/Lots";
+import { useGetLots } from "@shared/services/queries";
+import { Loader } from "@shared/components";
 import {
   Block,
   BlockContent,
   BlockHeader,
 } from "@shared/components/Block/Block";
 
-// Тестовые данные
-const testData: Lot[] = [
-  {
-    id: 1,
-    lotNumber: 101,
-    fuelType: "АИ-95",
-    oilBaseName: "Нефтебаза_1",
-    region: "Центр",
-    date: "2025-03-01",
-    pricePerTon: 55000,
-    availableVolume: 12000,
-  },
-  {
-    id: 2,
-    lotNumber: 102,
-    fuelType: "ДТ",
-    oilBaseName: "Нефтебаза_2",
-    region: "Север",
-    date: "2025-03-01",
-    pricePerTon: 48000,
-    availableVolume: 15000,
-  },
-  {
-    id: 3,
-    lotNumber: 103,
-    fuelType: "АИ-92",
-    oilBaseName: "Нефтебаза_3",
-    region: "Юг",
-    date: "2025-03-01",
-    pricePerTon: 50000,
-    availableVolume: 9000,
-  },
-  {
-    id: 4,
-    lotNumber: 104,
-    fuelType: "АИ-95 Экто",
-    oilBaseName: "Нефтебаза_1",
-    region: "Центр",
-    date: "2025-03-01",
-    pricePerTon: 57000,
-    availableVolume: 11000,
-  },
-];
+import styles from "./styles/marketplace.module.scss";
 
 export const MarketplacePage: React.FC = () => {
+  const { data, isLoading } = useGetLots();
+
+  // Состояния для фильтрации
+  const [regionFilter, setRegionFilter] = React.useState("");
+  const [fuelFilter, setFuelFilter] = React.useState("");
+  const [oilBaseFilter, setOilBaseFilter] = React.useState("");
+
+  // Состояние для поиска
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  // Фильтруем данные на клиенте с безопасным доступом к значениям
+  const filteredLots = React.useMemo(() => {
+    if (!data?.data) return [];
+
+    return data.data.filter((lot) => {
+      // Фильтр по нефтебазе
+      if (
+        oilBaseFilter &&
+        (oilBaseMap[lot.code_nb] || "").toLowerCase() !==
+          oilBaseFilter.toLowerCase()
+      ) {
+        return false;
+      }
+      // Фильтр по типу топлива
+      if (
+        fuelFilter &&
+        (fuelTypeMap[lot.code_fuel] || "").toLowerCase() !==
+          fuelFilter.toLowerCase()
+      ) {
+        return false;
+      }
+
+      // Поиск по ключевым словам
+      const lowerSearch = searchQuery.toLowerCase();
+      if (searchQuery) {
+        const fuelStr = (fuelTypeMap[lot.code_fuel] || "").toLowerCase();
+        const oilBaseStr = (oilBaseMap[lot.code_nb] || "").toLowerCase();
+        if (
+          !fuelStr.includes(lowerSearch) &&
+          !oilBaseStr.includes(lowerSearch)
+        ) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [data?.data, fuelFilter, oilBaseFilter, searchQuery]);
+
+  // Отбираем только лоты, которые подтверждены и имеют положительный остаток
+  const knownLots = React.useMemo(() => {
+    return filteredLots.filter(
+      (lot) =>
+        lot.status === "Подтвержден" && parseFloat(lot.available_balance) > 0
+    );
+  }, [filteredLots]);
+
+  // Вычисляем Highest и Lowest price на основе поля price_per_ton из известных лотов
+  const highestPrice = React.useMemo(() => {
+    if (!knownLots.length) return 0;
+    return Math.max(...knownLots.map((lot) => parseFloat(lot.price_per_ton)));
+  }, [knownLots]);
+
+  const lowestPrice = React.useMemo(() => {
+    if (!knownLots.length) return 0;
+    return Math.min(...knownLots.map((lot) => parseFloat(lot.price_per_ton)));
+  }, [knownLots]);
+
   return (
     <Layout className={styles.marketplace}>
+      {/* Шапка */}
       <Header className={styles.marketplace__header}>
         <div className={styles.marketplace__container}>
           <Avatar
@@ -66,39 +94,77 @@ export const MarketplacePage: React.FC = () => {
             icon={<User />}
             className={styles.marketplace__avatar}
           />
+          {/* Поисковая строка */}
           <Input
             placeholder="Search..."
             variant="borderless"
             className={styles.marketplace__search}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </Header>
 
+      {/* Основной контент */}
       <main className={styles.marketplace__main}>
         <h1 className={styles.marketplace__title}>Marketplace</h1>
 
-        <FilterWidget />
+        {/* Виджет фильтров */}
+        <FilterWidget
+          regions={[
+            { label: "ЮГ", key: "ЮГ" },
+            { label: "СЕВЕР", key: "СЕВЕР" },
+            { label: "ВОСТОК", key: "ВОСТОК" },
+            { label: "ЗАПАД", key: "ЗАПАД" },
+          ]}
+          fuelTypes={[
+            { label: "АИ-95", key: "АИ-95" },
+            { label: "АИ-92", key: "АИ-92" },
+            { label: "ДТ", key: "ДТ" },
+          ]}
+          oilBases={[
+            { label: "Нефтебаза_1", key: "Нефтебаза_1" },
+            { label: "Нефтебаза_2", key: "Нефтебаза_2" },
+          ]}
+          onRegionChange={setRegionFilter}
+          onFuelChange={setFuelFilter}
+          onOilBaseChange={setOilBaseFilter}
+        />
 
-        <div className={styles.marketplace__blocks}>
-          <Block className={styles.marketplace__block}>
-            <BlockHeader icon={<Filter width={16} height={16} />}>
-              Total number of lots
-            </BlockHeader>
-            <BlockContent>432</BlockContent>
-          </Block>
-          <Block className={styles.marketplace__block}>
-            <BlockHeader icon={<DollarSign width={16} height={16} />}>
-              Highest price
-            </BlockHeader>
-            <BlockContent>$52.89</BlockContent>
-          </Block>
-          <Block className={styles.marketplace__block}>
-            <BlockHeader icon={<DollarSign width={16} height={16} />}>
-              Lowest price
-            </BlockHeader>
-            <BlockContent>$373.02</BlockContent>
-          </Block>
-        </div>
+        {isLoading ? (
+          <div className={styles.marketplace__loader}>
+            <Loader />
+          </div>
+        ) : (
+          <>
+            {/* Блоки со статистикой */}
+            <div className={styles.marketplace__blocks}>
+              <Block className={styles.marketplace__block}>
+                <BlockHeader icon={<Filter width={16} height={16} />}>
+                  Total number of lots
+                </BlockHeader>
+                <BlockContent>{knownLots.length}</BlockContent>
+              </Block>
+
+              <Block className={styles.marketplace__block}>
+                <BlockHeader icon={<DollarSign width={16} height={16} />}>
+                  Highest price
+                </BlockHeader>
+                <BlockContent>${highestPrice.toFixed(2)}</BlockContent>
+              </Block>
+
+              <Block className={styles.marketplace__block}>
+                <BlockHeader icon={<DollarSign width={16} height={16} />}>
+                  Lowest price
+                </BlockHeader>
+                <BlockContent>${lowestPrice.toFixed(2)}</BlockContent>
+              </Block>
+            </div>
+
+            {/* Таблица (Lots) с отфильтрованными данными */}
+            <Lots data={filteredLots} />
+          </>
+        )}
       </main>
     </Layout>
   );
