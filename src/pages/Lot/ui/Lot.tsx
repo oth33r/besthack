@@ -25,7 +25,7 @@ const LotComponent: React.FC = () => {
         <p>Код КССС НБ: {lot.data.code_nb}</p>
         <p>Код КССС Топлива: {lot.data.code_fuel}</p>
         <p>Остаток: {lot.data.available_balance} тонн</p>
-        <p>Статус: {lot.status}</p>
+        <p>Статус: {lot.data.status}</p>
 
         <LotForm
           lotNumber={lot.data.number}
