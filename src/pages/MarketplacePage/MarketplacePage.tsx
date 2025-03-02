@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Avatar, Input, Layout } from "antd";
 import { Header } from "antd/es/layout/layout";
-import { DollarSign, Filter, User } from "lucide-react";
+import { Filter, RussianRuble, User } from "lucide-react";
 
 import { FilterWidget } from "@widgets/FilterWidget";
 import { Lots, fuelTypeMap, oilBaseMap } from "@widgets/Lots";
@@ -95,7 +95,7 @@ export const MarketplacePage: React.FC = () => {
             className={styles.marketplace__avatar}
           />
           <Input
-            placeholder="Search..."
+            placeholder="Поиск..."
             variant="borderless"
             className={styles.marketplace__search}
             value={searchQuery}
@@ -105,7 +105,7 @@ export const MarketplacePage: React.FC = () => {
       </Header>
 
       <main className={styles.marketplace__main}>
-        <h1 className={styles.marketplace__title}>Marketplace</h1>
+        <h1 className={styles.marketplace__title}>Маркетплейс топлива</h1>
 
         <FilterWidget
           regions={[
@@ -140,23 +140,23 @@ export const MarketplacePage: React.FC = () => {
             <div className={styles.marketplace__blocks}>
               <Block className={styles.marketplace__block}>
                 <BlockHeader icon={<Filter width={16} height={16} />}>
-                  Total number of lots
+                  Количество лотов
                 </BlockHeader>
                 <BlockContent>{knownLots.length}</BlockContent>
               </Block>
 
               <Block className={styles.marketplace__block}>
-                <BlockHeader icon={<DollarSign width={16} height={16} />}>
-                  Highest price
+                <BlockHeader icon={<RussianRuble width={16} height={16} />}>
+                  Максимальная цена
                 </BlockHeader>
-                <BlockContent>${highestPrice.toFixed(2)}</BlockContent>
+                <BlockContent>₽{highestPrice.toFixed(2)}</BlockContent>
               </Block>
 
               <Block className={styles.marketplace__block}>
-                <BlockHeader icon={<DollarSign width={16} height={16} />}>
-                  Lowest price
+                <BlockHeader icon={<RussianRuble width={16} height={16} />}>
+                  Минимальная цена
                 </BlockHeader>
-                <BlockContent>${lowestPrice.toFixed(2)}</BlockContent>
+                <BlockContent>₽{lowestPrice.toFixed(2)}</BlockContent>
               </Block>
             </div>
 

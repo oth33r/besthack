@@ -63,7 +63,7 @@ const RegistrationForm = () => {
           render={({ field }) => (
             <Input
               type="password"
-              placeholder="Password"
+              placeholder="Пароль"
               variant="borderless"
               {...field}
               className={styles.registration__input}
@@ -77,7 +77,7 @@ const RegistrationForm = () => {
           render={({ field }) => (
             <Input
               type="password"
-              placeholder="Confirm password"
+              placeholder="Подтвердите пароль"
               variant="borderless"
               {...field}
               className={styles.registration__input}
@@ -93,7 +93,7 @@ const RegistrationForm = () => {
         form="authorization-form"
         disabled={loading}
       >
-        {error ? "Try again" : loading ? <Loader /> : "Create account"}
+        {error ? "Попробуйте снова" : loading ? <Loader /> : "Создать аккаунт"}
       </Button>
     </>
   );

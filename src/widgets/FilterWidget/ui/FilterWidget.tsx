@@ -46,7 +46,7 @@ const FilterWidget = ({
         trigger={["click"]}
       >
         <Input
-          placeholder={selectedRegion || "Region..."}
+          placeholder={selectedRegion || "Регион..."}
           variant="borderless"
           className={styles.filters__input}
           readOnly
@@ -64,7 +64,7 @@ const FilterWidget = ({
         trigger={["click"]}
       >
         <Input
-          placeholder={selectedFuel || "Fuel type..."}
+          placeholder={selectedFuel || "Тип топлива..."}
           variant="borderless"
           className={styles.filters__input}
           readOnly
@@ -82,7 +82,7 @@ const FilterWidget = ({
         trigger={["click"]}
       >
         <Input
-          placeholder={selectedOilBase || "Oil base..."}
+          placeholder={selectedOilBase || "Нефтебаза..."}
           variant="borderless"
           className={styles.filters__input}
           readOnly
@@ -90,7 +90,7 @@ const FilterWidget = ({
       </Dropdown>
 
       <Button onClick={resetFilters} type="default">
-        Reset
+        Сбросить
       </Button>
     </div>
   );

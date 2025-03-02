@@ -49,7 +49,7 @@ const AuthorizationForm = () => {
           render={({ field }) => (
             <Input
               type="password"
-              placeholder="Password"
+              placeholder="Пароль"
               variant="borderless"
               {...field}
               className={styles.authorization__input}
@@ -65,7 +65,7 @@ const AuthorizationForm = () => {
         form="authorization-form"
         disabled={isLoading}
       >
-        {isLoading ? <Loader /> : isError ? "Try again" : "Login"}
+        {isLoading ? <Loader /> : isError ? "Попробуйте снова" : "Войти"}
       </Button>
     </>
   );

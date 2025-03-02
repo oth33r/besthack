@@ -9,11 +9,11 @@ const Authorization = () => {
   return (
     <section className={styles.authorization}>
       <div className={styles.authorization__leftSection}>
-        <h1 className={styles.authorization__title}>Welcome back!</h1>
+        <h1 className={styles.authorization__title}>Добро пожаловать!</h1>
         <span>
-          Do not have an account?{" "}
+          Нет аккаунта?{" "}
           <Link to="/registration" className={styles.authorization__link}>
-            Sign up
+            Зарегистрироваться
           </Link>
         </span>
 

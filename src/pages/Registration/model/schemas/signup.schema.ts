@@ -3,28 +3,28 @@ import { z } from "zod";
 export const signupSchema = z
   .object({
     email: z.string().email({
-      message: "Invalid email address",
+      message: "Неверный email",
     }),
     password: z
       .string({
-        message: "Password is required",
+        message: "Пароль обязателен",
       })
       .min(8, {
-        message: "Password must be at least 8 characters long",
+        message: "Пароль должен содержать не менее 8 символов",
       })
       .max(30, {
-        message: "Password must be less than 30 characters",
+        message: "Пароль должен содержать не более 30 символов",
       }),
     confirmPassword: z
       .string()
       .min(8, {
-        message: "Passwords must match",
+        message: "Пароли должны совпадать",
       })
       .max(30, {
-        message: "Password must be less than 30 characters",
+        message: "Пароль должен содержать не более 30 символов",
       }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
-    message: "Passwords must match",
+    message: "Пароли должны совпадать",
   });

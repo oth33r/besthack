@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const authorizationSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.string().email({ message: "Неверный email" }),
   password: z
-    .string({ message: "Password is required" })
-    .min(8, { message: "Password must be at least 8 characters long" })
-    .max(30, { message: "Password must be less than 30 characters long" }),
+    .string({ message: "Пароль обязателен" })
+    .min(8, { message: "Пароль должен содержать не менее 8 символов" })
+    .max(30, { message: "Пароль должен содержать не более 30 символов" }),
 });
