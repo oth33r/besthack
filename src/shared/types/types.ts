@@ -22,7 +22,6 @@ export type Lot = {
   status: string;
 };
 
-// shared/types/types.ts или рядом
 export type AuthResponse = {
   access_token: string;
   refresh_token: string;

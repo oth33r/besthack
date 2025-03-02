@@ -36,7 +36,7 @@ export const createUser = async (data: SignupFormType) => {
 };
 
 export const validateUser = async () => {
-  return await API.get("/validate/");
+  return await API.get("/auth/validate/");
 };
 
 export const getLots = async () => {
