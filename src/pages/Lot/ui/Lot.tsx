@@ -13,7 +13,7 @@ const LotComponent: React.FC = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    return <div className={styles.error}>Something went wrong</div>;
+    return <div className={styles.error}>Неизвестная ошибка</div>;
   }
 
   if (!lot) return null;
