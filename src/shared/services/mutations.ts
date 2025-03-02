@@ -1,5 +1,5 @@
 import { useMutation } from "react-query";
-import { createUser, login } from "./api";
+import { createUser, login, placeOrder } from "./api";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { SignupFormType } from "@pages/Registration/model/types/types";
@@ -24,6 +24,18 @@ export const useCreateUser = () => {
 
     onError: (error: AxiosError<SignupFormType>) => {
       throw error;
+    },
+  });
+};
+
+export const usePlaceOrder = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: placeOrder,
+
+    onSuccess: () => {
+      navigate("/");
     },
   });
 };

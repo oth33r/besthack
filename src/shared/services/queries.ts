@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getLots, getUser, validateUser } from "./api";
+import { getLotById, getLots, getUser, validateUser } from "./api";
 
 export const useGetUser = (id: string) => {
   return useQuery({
@@ -19,5 +19,12 @@ export const useGetLots = () => {
   return useQuery({
     queryKey: ["lots"],
     queryFn: () => getLots(),
+  });
+};
+
+export const useGetLotById = (id: number) => {
+  return useQuery({
+    queryKey: ["lot", id],
+    queryFn: () => getLotById(id),
   });
 };

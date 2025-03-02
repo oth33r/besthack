@@ -1,6 +1,6 @@
 import { AuthorizationFormType } from "@pages/Authorization/model/types/types";
 import { SignupFormType } from "@pages/Registration/model/types/types";
-import { Lot } from "@shared/types/types";
+import { Lot, Order } from "@pages/Lot/model/types/types";
 import axios from "axios";
 
 export const API = axios.create({
@@ -41,4 +41,12 @@ export const validateUser = async () => {
 
 export const getLots = async () => {
   return await API.get<Lot[]>("/lot/");
+};
+
+export const getLotById = async (id: number) => {
+  return await API.get<Lot>(`/lot/${id}`);
+};
+
+export const placeOrder = async (order: Order): Promise<void> => {
+  return await API.post("/order/", order);
 };
