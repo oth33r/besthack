@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button, Input } from "antd";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -26,16 +27,29 @@ const RegistrationForm = () => {
   } = useLogin();
 
   const submitHandler: SubmitHandler<SignupFormType> = async (data) => {
-    await createUser(data).then(async () => {
+    try {
+      await createUser(data);
       await login({
         email: data.email,
         password: data.password,
       });
-    });
+    } catch (error) {
+      if (error.response?.status === 400) {
+        sessionStorage.setItem("registrationError", "true");
+        window.location.reload();
+      }
+    }
   };
 
   const error = isError || isLoginError;
   const loading = isLoading || isLoginLoading;
+
+  React.useEffect(() => {
+    if (sessionStorage.getItem("registrationError") === "true") {
+      alert("Existing user cannot be created again!");
+      sessionStorage.removeItem("registrationError");
+    }
+  }, []);
 
   return (
     <>
