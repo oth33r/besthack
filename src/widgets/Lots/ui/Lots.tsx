@@ -1,8 +1,6 @@
 import { Table } from "antd";
 import styles from "./styles/lots.module.scss";
 import { Lot } from "@shared/types/types";
-import { useGetLots } from "@shared/services/queries";
-import { Loader } from "@shared/components/Loader/Loader";
 
 export const fuelTypeMap: Record<number, string> = {
   10: "АИ-92",

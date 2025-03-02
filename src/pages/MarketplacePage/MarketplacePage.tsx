@@ -18,20 +18,17 @@ import styles from "./styles/marketplace.module.scss";
 export const MarketplacePage: React.FC = () => {
   const { data, isLoading } = useGetLots();
 
-  // Состояния для фильтрации
   const [regionFilter, setRegionFilter] = React.useState("");
   const [fuelFilter, setFuelFilter] = React.useState("");
   const [oilBaseFilter, setOilBaseFilter] = React.useState("");
 
-  // Состояние для поиска
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  // Фильтруем данные на клиенте с безопасным доступом к значениям
+  console.log(regionFilter);
   const filteredLots = React.useMemo(() => {
     if (!data?.data) return [];
 
     return data.data.filter((lot) => {
-      // Фильтр по нефтебазе
       if (
         oilBaseFilter &&
         (oilBaseMap[lot.code_nb] || "").toLowerCase() !==
@@ -39,7 +36,6 @@ export const MarketplacePage: React.FC = () => {
       ) {
         return false;
       }
-      // Фильтр по типу топлива
       if (
         fuelFilter &&
         (fuelTypeMap[lot.code_fuel] || "").toLowerCase() !==
@@ -48,7 +44,6 @@ export const MarketplacePage: React.FC = () => {
         return false;
       }
 
-      // Поиск по ключевым словам
       const lowerSearch = searchQuery.toLowerCase();
       if (searchQuery) {
         const fuelStr = (fuelTypeMap[lot.code_fuel] || "").toLowerCase();
@@ -65,7 +60,6 @@ export const MarketplacePage: React.FC = () => {
     });
   }, [data?.data, fuelFilter, oilBaseFilter, searchQuery]);
 
-  // Отбираем только лоты, которые подтверждены и имеют положительный остаток
   const knownLots = React.useMemo(() => {
     return filteredLots.filter(
       (lot) =>
@@ -73,7 +67,6 @@ export const MarketplacePage: React.FC = () => {
     );
   }, [filteredLots]);
 
-  // Вычисляем Highest и Lowest price на основе поля price_per_ton из известных лотов
   const highestPrice = React.useMemo(() => {
     if (!knownLots.length) return 0;
     return Math.max(...knownLots.map((lot) => parseFloat(lot.price_per_ton)));
@@ -86,7 +79,6 @@ export const MarketplacePage: React.FC = () => {
 
   return (
     <Layout className={styles.marketplace}>
-      {/* Шапка */}
       <Header className={styles.marketplace__header}>
         <div className={styles.marketplace__container}>
           <Avatar
@@ -94,7 +86,6 @@ export const MarketplacePage: React.FC = () => {
             icon={<User />}
             className={styles.marketplace__avatar}
           />
-          {/* Поисковая строка */}
           <Input
             placeholder="Search..."
             variant="borderless"
@@ -105,11 +96,9 @@ export const MarketplacePage: React.FC = () => {
         </div>
       </Header>
 
-      {/* Основной контент */}
       <main className={styles.marketplace__main}>
         <h1 className={styles.marketplace__title}>Marketplace</h1>
 
-        {/* Виджет фильтров */}
         <FilterWidget
           regions={[
             { label: "ЮГ", key: "ЮГ" },
@@ -137,7 +126,6 @@ export const MarketplacePage: React.FC = () => {
           </div>
         ) : (
           <>
-            {/* Блоки со статистикой */}
             <div className={styles.marketplace__blocks}>
               <Block className={styles.marketplace__block}>
                 <BlockHeader icon={<Filter width={16} height={16} />}>
@@ -161,7 +149,6 @@ export const MarketplacePage: React.FC = () => {
               </Block>
             </div>
 
-            {/* Таблица (Lots) с отфильтрованными данными */}
             <Lots data={filteredLots} />
           </>
         )}
