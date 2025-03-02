@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY index.html ./
-COPY vite.config.js ./
+COPY vite.config.ts ./
 COPY tsconfig*.json ./
 COPY src/ ./src/
 
