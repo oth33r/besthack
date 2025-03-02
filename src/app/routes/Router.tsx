@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Authorization, Registration, LotComponent, MarketplacePage } from "@pages";
+import { Authorization, Registration, MarketplacePage } from "@pages";
 
 const Router = () => {
   return (
@@ -8,7 +8,6 @@ const Router = () => {
       <Route path="/registration" element={<Registration />} />
       <Route path="/" element={<MarketplacePage />} />
       <Route path="*" element={<Navigate to="/authorization" />} />
-      <Route path="/lot/:lotId" element={<LotComponent />} />
     </Routes>
   );
 };
