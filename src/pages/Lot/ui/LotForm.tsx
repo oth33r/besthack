@@ -18,7 +18,7 @@ const LotForm: React.FC<LotFormProps> = ({
 }) => {
   const [volume, setVolume] = useState<number>(0);
   const [deliveryType, setDeliveryType] = useState<string>("self_delivery");
-  const { mutate: placeOrder, isLoading, isError } = usePlaceOrder();
+  const { mutate: placeOrder, isLoading, isError, error } = usePlaceOrder();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +39,11 @@ const LotForm: React.FC<LotFormProps> = ({
     <form className={styles.form} onSubmit={handleSubmit}>
       <h3 className={styles.form__title}>Оформление заказа</h3>
       {isError && (
-        <div className={styles.form__error}>Something went wrong</div>
+        <div className={styles.form__error}>
+          {(error as any)?.response?.status === 400
+            ? "Недостаточное количество топлива"
+            : "Неизвестная ошибка"}
+        </div>
       )}
       <div className={styles.form__inputGroup}>
         <label htmlFor="volume" className={styles.form__label}>
