@@ -109,6 +109,8 @@ export const MarketplacePage: React.FC = () => {
           fuelTypes={[
             { label: "АИ-95", key: "АИ-95" },
             { label: "АИ-92", key: "АИ-92" },
+            { label: "АИ-92 Экто", key: "АИ-92 Экто" },
+            { label: "АИ-95 Экто", key: "АИ-95 Экто" },
             { label: "ДТ", key: "ДТ" },
           ]}
           oilBases={[
