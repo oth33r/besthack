@@ -65,20 +65,24 @@ export const MarketplacePage: React.FC = () => {
     });
   }, [data?.data, fuelFilter, oilBaseFilter, searchQuery]);
 
-  // Вычисляем Highest и Lowest price на основе поля price_per_ton
-  const highestPrice = React.useMemo(() => {
-    if (!filteredLots.length) return 0;
-    return Math.max(
-      ...filteredLots.map((lot) => parseFloat(lot.price_per_ton))
+  // Отбираем только лоты, которые подтверждены и имеют положительный остаток
+  const knownLots = React.useMemo(() => {
+    return filteredLots.filter(
+      (lot) =>
+        lot.status === "Подтвержден" && parseFloat(lot.available_balance) > 0
     );
   }, [filteredLots]);
 
+  // Вычисляем Highest и Lowest price на основе поля price_per_ton из известных лотов
+  const highestPrice = React.useMemo(() => {
+    if (!knownLots.length) return 0;
+    return Math.max(...knownLots.map((lot) => parseFloat(lot.price_per_ton)));
+  }, [knownLots]);
+
   const lowestPrice = React.useMemo(() => {
-    if (!filteredLots.length) return 0;
-    return Math.min(
-      ...filteredLots.map((lot) => parseFloat(lot.price_per_ton))
-    );
-  }, [filteredLots]);
+    if (!knownLots.length) return 0;
+    return Math.min(...knownLots.map((lot) => parseFloat(lot.price_per_ton)));
+  }, [knownLots]);
 
   return (
     <Layout className={styles.marketplace}>
@@ -139,7 +143,7 @@ export const MarketplacePage: React.FC = () => {
                 <BlockHeader icon={<Filter width={16} height={16} />}>
                   Total number of lots
                 </BlockHeader>
-                <BlockContent>{filteredLots.length}</BlockContent>
+                <BlockContent>{knownLots.length}</BlockContent>
               </Block>
 
               <Block className={styles.marketplace__block}>

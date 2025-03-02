@@ -7,6 +7,16 @@ export const API = axios.create({
   baseURL: "http://185.157.214.169:8888",
 });
 
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem("access_token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
 import { AuthResponse } from "@shared/types/types";
 
 export const login = async (data: AuthorizationFormType) => {

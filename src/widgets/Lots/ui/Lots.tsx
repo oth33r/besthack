@@ -69,26 +69,36 @@ const Lots = ({ data }: LotsProps) => {
   console.log("Rendering Lots with data:", data);
 
   const formattedData = data
-    .filter((lot) => lot.status === "Подтвержден") // Оставляем только подтвержденные лоты
     .map((lot) => ({
       key: lot._id,
-      number: lot.number,
-      date: lot.date,
       oilBaseName: oilBaseMap[lot.code_nb] || "Неизвестно",
       fuelType: fuelTypeMap[lot.code_fuel] || "Неизвестно",
       availableBalance: parseFloat(lot.available_balance),
       pricePerTon: parseFloat(lot.price_per_ton),
-    }));
+      ...lot,
+      number: lot.number,
+      date: lot.date,
+    }))
+    .filter(
+      (lot) =>
+        lot.status === "Подтвержден" &&
+        lot.oilBaseName !== "Неизвестно" &&
+        lot.fuelType !== "Неизвестно"
+    );
 
   return (
     <Table
       className={styles.lots}
       columns={columns}
       dataSource={formattedData}
+      scroll={{ x: "max-content" }}
       locale={{
         emptyText: "Нет доступных лотов",
       }}
-      pagination={{ pageSize: 10 }}
+      pagination={{
+        pageSize: 10,
+        position: ["bottomCenter"],
+      }}
     />
   );
 };

@@ -3,3 +3,29 @@
   border-radius: 16px;
   border: 1px solid var(--border-color);
 }
+
+.lots {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+
+  :global {
+    .ant-table {
+      &-wrapper {
+        border-radius: 8px;
+      }
+
+      &-container {
+        border-radius: 8px;
+      }
+
+      &-content {
+        overflow: auto;
+      }
+    }
+
+    .ant-pagination {
+      margin: 16px 0;
+    }
+  }
+}
