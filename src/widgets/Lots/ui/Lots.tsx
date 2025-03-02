@@ -18,6 +18,13 @@ export const oilBaseMap: Record<number, string> = {
   103: "Нефтебаза_3",
 };
 
+export const regionMap: Record<number, string> = {
+  101: "ЮГ",
+  102: "СЕВЕР",
+  103: "ВОСТОК",
+  104: "ЗАПАД",
+};
+
 const columns = [
   {
     title: "Номер лота",
@@ -41,6 +48,15 @@ const columns = [
       value: base,
     })),
     onFilter: (value: any, record: any) => record.oilBaseName === value,
+  },
+  {
+    title: "Регион",
+    dataIndex: "region",
+    filters: Object.values(regionMap).map((region) => ({
+      text: region,
+      value: region,
+    })),
+    onFilter: (value: any, record: any) => record.region === value,
   },
   {
     title: "Дата лота",
@@ -73,6 +89,7 @@ const Lots = ({ data }: LotsProps) => {
       key: lot._id,
       oilBaseName: oilBaseMap[lot.code_nb] || "Неизвестно",
       fuelType: fuelTypeMap[lot.code_fuel] || "Неизвестно",
+      region: regionMap[lot.code_nb] || "Неизвестно",
       availableBalance: parseFloat(lot.available_balance),
       pricePerTon: parseFloat(lot.price_per_ton),
       ...lot,

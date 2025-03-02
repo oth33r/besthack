@@ -14,6 +14,7 @@ import {
 } from "@shared/components/Block/Block";
 
 import styles from "./styles/marketplace.module.scss";
+import { regionMap } from "@widgets/Lots/ui/Lots";
 
 export const MarketplacePage: React.FC = () => {
   const { data, isLoading } = useGetLots();
@@ -48,6 +49,15 @@ export const MarketplacePage: React.FC = () => {
         return false;
       }
 
+      // Фильтр по региону
+      if (
+        regionFilter &&
+        (regionMap[lot.code_nb] || "").toLowerCase() !==
+          regionFilter.toLowerCase()
+      ) {
+        return false;
+      }
+
       // Поиск по ключевым словам
       const lowerSearch = searchQuery.toLowerCase();
       if (searchQuery) {
@@ -63,7 +73,7 @@ export const MarketplacePage: React.FC = () => {
 
       return true;
     });
-  }, [data?.data, fuelFilter, oilBaseFilter, searchQuery]);
+  }, [data?.data, fuelFilter, oilBaseFilter, regionFilter, searchQuery]);
 
   // Отбираем только лоты, которые подтверждены и имеют положительный остаток
   const knownLots = React.useMemo(() => {
