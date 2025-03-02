@@ -1,50 +1,96 @@
-# React + TypeScript + Vite
+# BestHack &mdash; Frontend часть
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Описание
 
-Currently, two official plugins are available:
+Маркетплейс топлива — это веб-приложение, разработанное для эффективной торговли остатками топливных ресурсов. Платформа позволяет пользователям просматривать доступные лоты топлива, фильтровать их по различным параметрам (регион, тип топлива, нефтебаза) и осуществлять поиск по ключевым словам.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Основные возможности веб-приложения:
 
-## Expanding the ESLint configuration
+- Авторизация и регистрация пользователей
+- Просмотр списка доступных лотов топлива
+- Фильтрация лотов по региону, типу топлива и нефтебазе
+- Поиск лотов по ключевым словам
+- Просмотр детальной информации о конкретном лоте
+- Оформление заказа на приобретение определённого объёма топлива
+- Отображение статистики (количество лотов, максимальная и минимальная цена)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Архитектура
 
-- Configure the top-level `parserOptions` property like this:
+Приложение разработано с использованием современного стека технологий:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Фронтенд
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- **React** — для создания пользовательских интерфейсов
+- **TypeScript** — для повышения надежности кода
+- **React Router** — для навигации между страницами
+- **React Query** — для управления серверным состоянием и кэширования
+- **Ant Design** — компоненты для создания современного UI
+- **SCSS** — для стилизации компонентов
+- **Vite** — для быстрой и удобной сборки
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Структура проекта
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Проект организован по принципу Feature-Sliced Design:
+
+- **app/** — глобальная конфигурация приложения, роутинг
+- **pages/** — страницы приложения (Авторизация, Регистрация, Маркетплейс, Лот)
+- **widgets/** — составные компоненты, объединяющие несколько фич (Фильтры, Список лотов)
+- **shared/** — переиспользуемые компоненты, утилиты, API-сервисы
+
+### Взаимодействие с API
+
+- Приложение взаимодействует с бэкендом через REST API
+- Для HTTP-запросов используется библиотека Axios
+- Базовый URL API настраивается через переменную окружения VITE_API_URL
+
+## Как запускать
+
+### Локально
+
+1. Склонируйте репозиторий:
+
+    ```shell
+    git clone https://github.com/oth33r/besthack
+    cd besthack
+    ```
+
+2. Установите зависимости:
+
+    `npm install`
+
+3. Создайте `.env` файл в корне репозитория:
+
+    ```env
+    VITE_API_URL=http://185.157.214.169:8888
+    ```
+
+4. Соберите проект:
+
+    `npm run build`
+
+5. Запустите предпросмотр собранного проекта:
+
+    `npm run preview`
+
+6. Для запуска режима разработки:
+
+    `npm run dev`
+
+### Docker
+
+1. Склонируйте репозиторий:
+
+    ```shell
+    git clone https://github.com/oth33r/besthack
+    cd besthack
+    ```
+
+2. Соберите Docker образ:
+
+    `docker build -t besthack-frontend .`
+
+3. Запустите контейнер:
+
+    `docker run -d -p 4173:4173 --name besthack-frontend besthack-frontend`
+
+   Приложение будет доступно по адресу: <http://localhost:4173>
