@@ -10,7 +10,9 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: login,
 
-    onSuccess: () => {
+    onSuccess: (data) => {
+      localStorage.setItem("access_token", data.data.access_token);
+      localStorage.setItem("refresh_token", data.data.refresh_token);
       navigate("/");
     },
   });
